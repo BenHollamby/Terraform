@@ -107,3 +107,38 @@ resource "aws_route_table_association" "RT-Associate-Private" {
 
 }
 
+resource "aws_security_group" "DEV-SG" {
+  name = "DEV-SG"
+  description = "Default DEV Security Group"
+  vpc_id = aws_vpc.DEV-VPC.id
+
+  ingress {
+    description      = "SSH from VPC"
+    from_port        = 22
+    to_port          = 22
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+
+  }
+
+  ingress {
+    description      = "RDP from VPC"
+    from_port        = 3389
+    to_port          = 3389
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+
+  }
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    "Name" = "DEV-SG"
+  }
+
+}
